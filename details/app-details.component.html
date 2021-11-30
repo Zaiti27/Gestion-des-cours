@@ -1,0 +1,20 @@
+
+    <h3 class="text-center"> Modifier le cour </h3>
+    <form  #myform="ngForm" (ngSubmit)=" OnSaveCour(myform.value)">
+      
+      <input type="text"  class="form-control" name="title" placeholder="title" [(ngModel)]="t" #title="ngModel" required />  
+      <div *ngIf="title.errors "> 
+            <small class="k" *ngIf="title.errors.required">donnez un titre a votre cour  !</small>   
+           
+      </div>
+      <br>
+      <input type="text" class="form-control"  name="description" placeholder="description" [(ngModel)]="d" #description="ngModel" required/>
+        <div *ngIf="description.errors"> 
+            <small class="k" *ngIf="description.errors.required">ce champs est obligatoire ! </small>   
+        </div> <br>
+      <input type="submit" class="btn btn-secondary" value="Sauvgarder" [disabled]="myform.invalid">
+     
+      </form>
+     
+    
+    

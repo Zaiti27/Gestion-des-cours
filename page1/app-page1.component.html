@@ -1,0 +1,18 @@
+<h1 class="text-center"> Page d'acceuil</h1>
+<div class ='col-sm-12'>
+    <table  class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th>title</th>
+            <th>description</th>
+        </tr>
+    </thead>
+        <tbody>
+        <tr *ngFor="let c of cours">
+            <td>{{c.title}}></td>
+            <td>{{c.description}}</td>
+            <td><input type="button" class="k"(click)="OnUpdateFunction (c)" value="Modifier" /></td>
+            <td><input type="button"  class="k" (click)=" OnDeleteFunction(c)" value="Supprimer" /></td>
+        </tr>
+    </tbody>
+    </table>

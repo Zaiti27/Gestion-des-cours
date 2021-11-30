@@ -1,0 +1,17 @@
+<h3>ajouter un cour</h3>
+<form  #myform="ngForm" (ngSubmit)="OnAddCour(myform.value)">
+  
+    <input type="text"  class="form-control" name="title" placeholder="title" [(ngModel)]="t" #title="ngModel" required />  
+    <div *ngIf="title.errors "> 
+          <small class=" k" *ngIf="title.errors.required">donnez un titre a votre cour  !</small>   
+         
+    </div>
+    <br>
+    <input type="text" class="form-control"  name="description" placeholder="description" [(ngModel)]="d" #description="ngModel" required/>
+      <div *ngIf="description.errors"> 
+          <small class=" k" *ngIf="description.errors.required">ce champs est obligatoire ! </small>   
+      </div> <br>
+    <input type="submit" class="btn btn-secondary" value="Ajouter" [disabled]="myform.invalid">
+   
+    </form>
+   

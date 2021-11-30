@@ -1,0 +1,108 @@
+var express =require ("express");
+var app =express();
+var mongoose =require ('mongoose');
+//connection mongoDB
+mongoose.connect('mongodb://localhost:27017/cours'); 
+
+mongoose.connection.on('connected',()=>{
+console.log('MongoDB connected');
+});
+
+mongoose.connection.on('error',(err)=>{
+  console.log(err);  
+})
+//schema
+var Schema =mongoose.Schema;
+var courSchema= new Schema({
+  
+    title:String,
+    description:String,
+
+
+});
+
+var cours=mongoose.model("cours",courSchema);
+
+
+var bodyParser =require('body-parser');
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json())
+ 
+app.all('/*',function(req,res,next){
+res.header('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
+res.header('Access-Control-Allow-Origin','*');
+res.header('Access-Control-Allow-Headers','Content-Type,X-Requested-With');
+next();
+});
+
+
+
+app.get('/cours',function(req,res){
+cours.find({}).exec(function (err,cours){
+    if (err){
+        console.log('erreur')
+    }else {
+        res.json(cours)
+    }
+}
+)
+});
+
+app.get("/cours/:id",function(req,res){
+    cours.findById(req.params.id).exec(function(err,cour){
+        if(err){
+            console.log("erreur")
+        }else {
+            res.json(cour)
+        }
+    }
+    )
+});
+
+app.post('/cour',function(req,res){
+var newCour=new cours();
+newCour.title=req.body.title;
+newCour.description=req.body.description;
+newCour.save(function(err,insertedCour){
+    if(err){console.log('erreur')}else{res.json(insertedCour)}
+})
+});
+app.delete("/cour/:id",function(req,res){
+    cours.findByIdAndRemove(req.params.id,
+        function (err,deletedCour){
+            if(err){
+                res.send("error");
+                console.log(err);
+            }else {
+                res.json(deletedCour)
+            }
+        }
+        )
+    });
+    
+
+
+
+app.put('/cour/:id', function (req,res){
+cours.findByIdAndUpdate (req.params.id,{
+    $set:{ title:req.body.title ,description: req.body.description}
+},
+{
+    new :true
+},
+function (err,updatedCour){
+    if (err){
+        res.send("error")
+     
+    }else {
+        res.json(updatedCour)
+        
+    }
+
+})
+});
+
+
+
+app.listen (4000);
+ console.log("serveur lancé sur le port 4000");
